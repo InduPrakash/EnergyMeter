@@ -9,7 +9,7 @@
   "author": "Indu Prakash",
   "license": "ISC",
   "dependencies": {
-    "i2c": "0.2.1",
+    "i2c": "0.2.3",
     "request": "^2.79.0"
   }
 }
