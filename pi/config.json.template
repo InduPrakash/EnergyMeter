@@ -1,0 +1,9 @@
+{
+    "input_node": 1,
+    "apiKey": "",
+    "fileInterval": 10000,
+    "emonUrl": "http://raspberrypi/emoncms",
+    "debugLogging": false,
+    "i2cAddress": 4,
+    "i2cDevice": "/dev/i2c-1"
+}

@@ -1,0 +1,15 @@
+{
+  "name": "energymeter",
+  "version": "1.0.0",
+  "description": "Reads power data through I2C from Arduino and logs it to http://raspberrypi/emoncms",
+  "main": "energymeter.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Indu Prakash",
+  "license": "ISC",
+  "dependencies": {
+    "i2c": "0.2.1",
+    "request": "^2.79.0"
+  }
+}
