@@ -3,13 +3,14 @@
 
 /*jshint bitwise: false*/
 const fs = require('fs');
-const i2c = require("i2c");
+const i2c = require("i2c-bus");
 const request = require('request');
 const config = require("./config.json");
 
 //The I2C address was obtained by running "i2cdetect -y 1"
 //sudo apt-get install -y i2c-tools
-const wire = new i2c(config.i2cAddress, { device: config.i2cDevice, debug: false });
+const wire = i2c.openSync(1);
+const buffer = Buffer.alloc(12); //10 bytes of data
 
 const output = fs.createWriteStream('./stdout.log');
 const errorOutput = fs.createWriteStream('./stderr.log');
@@ -35,6 +36,7 @@ function parseAndFileData(data) {
 
     //File data
     var url = EMONCMSURL + json;
+    log(url);
     request(url, function (err) {
         if (err) {
             logErr(err);
@@ -44,13 +46,13 @@ function parseAndFileData(data) {
 
 function getI2CData() {
     //Just issue a read request
-    wire.read(10, function (err, data) {	//10 bytes
+    wire.i2cRead(config.i2cAddress, 10, buffer, function (err, bytes, bufOut) { //10 bytes
         if (err) {
             logErr(err);
         }
         else {
-            log("Read " + data);
-            parseAndFileData(data);
+            log("Read " + bufOut.toString('ascii'));
+            parseAndFileData(bufOut);
         }
     });
 }
