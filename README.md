@@ -2,7 +2,9 @@
 Raspberry Pi &amp; Arduino based home power usage capture.
 
 ## Arduino
-Arduino (nano) captures the power measurement using 2 AC current sensor SCT-013-000 100A, one on each power line. The output from SCT is fed into a voltage divider using 22R burder resistor (https://learn.openenergymonitor.org/electricity-monitoring/ct-sensors/interface-with-arduino). The power values are calculated and spit on the I2C channel every 2.5 seconds. The hard work of power calculations is done using EmonLib library.
+Arduino (nano) captures the power measurement using 2 AC current sensor SCT-013-000 100A, one on each power line. The output from the current sensors is fed into a voltage divider using 22R burder resistor (https://learn.openenergymonitor.org/electricity-monitoring/ct-sensors/interface-with-arduino). The power values are calculated and spit on the I2C channel every 2.5 seconds. The hard work of power calculations is done using EmonLib library.
+
+The system is hard coded for run for 120V (defined in EnergyMeter.ino).
 
 ## Raspberry Pi
 My system has been running on the first generation RaspBerry Pi B+ for 4 years now. It hosts the Emoncms website itself along with some other low usage servers. I have not seen any issues and so have not felt compelled to migrate it elsewhere.
@@ -14,8 +16,8 @@ Anyway, the process at Pi end is simple - capture I2C data and file it into Emon
 * The I2C interface at pi end is done in Node, the data is read every 10 seconds and filed to the emomcms instance.
 * The settings for this end are in config.json (copy/rename  config.json.template).
 * The power data is filed into the inputs *power1* and *power2* under the input_node.
-* The node script itself is registered as a service:
-    * Edit *energymeter* and update dir to point at the folder where energymeter.js is present.
+* Register the node script to run on startup. There are many ways to accomplish this but this how I did it.
+   * Edit *energymeter* and update dir to point at the folder where energymeter.js is present.
     ```
     dir="/home/U_S_E_R/EnergyMeter/pi"
     ```
@@ -32,7 +34,7 @@ Anyway, the process at Pi end is simple - capture I2C data and file it into Emon
     ```
     sudo /etc/init.d/energymeter start
     ```
-    The log and error files are in /var/log.
+    The log and error files are in /var/log folder.
 
 ### Settings
 
@@ -47,3 +49,6 @@ Anyway, the process at Pi end is simple - capture I2C data and file it into Emon
     "i2cDevice": "/dev/i2c-1"   //I2C device (in case this was not a Pi)
 }
 ```
+
+## ToDo
+* Measure voltage as well.
